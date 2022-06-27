@@ -1,0 +1,60 @@
+enum OrderStatus {
+    PND
+    PAID
+    DSP
+    DLV
+}
+
+type Orders {
+    orderUid: String
+    amount: Float!
+    mop: String!
+    status: OrderStatus!
+    date: String!
+    time: String!
+    message: String!
+    dNotes: String
+    fRemarks: String
+    clientId: Int!
+    client: Client!
+    recipientId: Int!
+    recipient: Recipient!
+    riderId: Int!
+    rider: Rider!
+    orderDetails: [OrderDetails]
+}
+
+type OrderDetails {
+    orderUid: String!
+    itemCode: String!
+    quantity: Int!
+    discountCode: String
+    totalPrice: Float
+    item: Items
+    discount: Discount
+}
+
+input OrdersInput {
+    mop: String!
+    status: OrderStatus!
+    date: String!
+    time: String!
+    message: String!
+    dNotes: String
+    fRemarks: String
+    clientAccount: String!
+    riderId: Int
+}
+
+input OrderDetailInput {
+    orderUid: String
+    itemCode: String!
+    quantity: Int!
+    discountCode: String
+}
+
+input NewOrderInput {
+    order: OrdersInput!
+    recipient: RecipientInput!
+    details: [OrderDetailInput]!
+}

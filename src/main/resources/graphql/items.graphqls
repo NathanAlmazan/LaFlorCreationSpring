@@ -1,0 +1,29 @@
+type Items {
+    itemCode: String!
+    itemName: String!
+    itemPrice: Float!
+    isAddon: Boolean
+    itemImage: String
+    discountCode: String
+    discount: Discount
+}
+
+type Discount {
+    discCode: String!
+    discAmount: Float!
+    discountedItems: [Items]
+}
+
+input DiscountInput {
+    discCode: String!
+    discAmount: Float!
+}
+
+input ItemsInput {
+    itemCode: String!
+    itemName: String!
+    itemPrice: Float!
+    isAddon: Boolean
+    itemImage: String
+    discountCode: String
+}

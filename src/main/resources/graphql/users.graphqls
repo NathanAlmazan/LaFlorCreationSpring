@@ -1,0 +1,51 @@
+type Client {
+    clientId: ID
+    accountUid: String
+    clientName: String!
+    clientContact: String!
+    clientOrders: [Orders]
+}
+
+type Recipient {
+    recipientId: ID
+    recipientName: String!
+    recipientContact: String!
+    recipientStreet: String!
+    recipientCity: String!
+    recipientProvince: String!
+    latitude: Float
+    longitude: Float
+}
+
+type Rider {
+    riderId: ID
+    accountUid: String
+    riderName: String!
+    riderContact: String
+    riderCity: String!
+    riderProvince: String!
+}
+
+input ClientInput {
+    accountUid: String
+    clientName: String!
+    clientContact: String!
+}
+
+input RecipientInput {
+    recipientName: String!
+    recipientContact: String!
+    recipientStreet: String!
+    recipientCity: String!
+    recipientProvince: String!
+    latitude: Float
+    longitude: Float
+}
+
+input RiderInput {
+    accountUid: String
+    riderName: String!
+    riderContact: String
+    riderCity: String!
+    riderProvince: String!
+}
