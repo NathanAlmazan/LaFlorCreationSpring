@@ -17,6 +17,13 @@ public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
     @Query(value = "SELECT * FROM orders_table WHERE order_uid = :uid", nativeQuery = true)
     OrdersTable findByOrderUid(@Param("uid") String uid);
 
+    @Query(value = "SELECT SUM(d.quantity * i.itemPrice) AS orderAmount, SUM(s.discountAmount) AS orderDiscount " +
+            "FROM OrderDetailsTable d " +
+            "INNER JOIN ItemsTable i ON d.id.itemCode = i.itemCode " +
+            "LEFT JOIN DiscountTable s ON d.discount.discountCode = s.discountCode " +
+            "WHERE d.id.orderUid = :uid")
+    OrderAmountProj getOrderAmount(@Param("uid") String uid);
+
     @Query(value = "SELECT * FROM orders_table WHERE client_id = :client", nativeQuery = true)
     List<OrdersTable> findOrdersByClient(@Param("client") Long clientId);
 
@@ -45,4 +52,19 @@ public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
             @Param("dNotes") String notes,
             @Param("fRemarks") String remarks
     );
+
+    @Query(value = "UPDATE orders_table SET source_id = :source, mop = :type WHERE order_uid = :uid RETURNING *", nativeQuery = true)
+    OrdersTable addPaymentSource(
+            @Param("uid") String orderUid,
+            @Param("source") String sourceId,
+            @Param("type") String modeOfPayment
+    );
+
+    @Query(value = "WITH search_order AS (SELECT source_id FROM orders_table WHERE order_uid = :uid) " +
+            "SELECT * FROM orders_table WHERE source_id = (SELECT source_id FROM search_order)", nativeQuery = true)
+    List<OrdersTable> findOrdersByPaymentSource(@Param("uid") String orderUid);
+
+    @Query(value = "UPDATE orders_table SET status = :status WHERE order_uid IN :orders RETURNING order_uid", nativeQuery = true)
+    List<OrdersTable> updateOrdersStatus(@Param("orders") List<String> orders, @Param("status") String status);
+
 }

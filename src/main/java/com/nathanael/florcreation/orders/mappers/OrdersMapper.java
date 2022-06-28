@@ -1,9 +1,12 @@
 package com.nathanael.florcreation.orders.mappers;
 
 import com.nathanael.florcreation.orders.dtos.OrderDetails;
+import com.nathanael.florcreation.orders.dtos.OrderPayment;
 import com.nathanael.florcreation.orders.dtos.Orders;
 import com.nathanael.florcreation.orders.models.OrderDetailsTable;
+import com.nathanael.florcreation.orders.models.OrderPaymentTable;
 import com.nathanael.florcreation.orders.models.OrdersTable;
+import com.nathanael.florcreation.orders.repository.OrderDetailsProj;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,16 +28,20 @@ public class OrdersMapper {
         return orders;
     }
 
-    public OrderDetails orderDetailsTableToOrderDetails(OrderDetailsTable orderDetailsTable) {
-        return new OrderDetails(orderDetailsTable);
+    public OrderDetails orderDetailsTableToOrderDetails(OrderDetailsProj orderDetails) {
+        return new OrderDetails(orderDetails);
     }
 
-    public List<OrderDetails> orderDetailsTableToOrderDetailsList(List<OrderDetailsTable> orderDetailsTables) {
+    public List<OrderDetails> orderDetailsTableToOrderDetailsList(List<OrderDetailsProj> orderDetailsTables) {
         List<OrderDetails> orders = new ArrayList<>(orderDetailsTables.size());
 
-        for (OrderDetailsTable order : orderDetailsTables)
+        for (OrderDetailsProj order : orderDetailsTables)
             orders.add(orderDetailsTableToOrderDetails(order));
 
         return orders;
+    }
+
+    public OrderPayment orderPaymentTableToOrderPayment(OrderPaymentTable orderPaymentTable) {
+        return new OrderPayment(orderPaymentTable);
     }
 }

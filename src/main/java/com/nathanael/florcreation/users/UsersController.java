@@ -25,9 +25,19 @@ public class UsersController {
         return clientServices.getAllClient();
     }
 
+    @QueryMapping
+    public Client clientByAccount(@Argument String uid) {
+        return clientServices.getClientByAccount(uid);
+    }
+
     @MutationMapping
     public Client createClient(@Argument @Valid Client client) {
         return clientServices.addNewClient(client);
+    }
+
+    @SchemaMapping(typeName = "Orders", field = "client")
+    public Client getOrderClient(Orders orders) {
+        return clientServices.getClientById(orders.getClientId());
     }
 
     @SchemaMapping(typeName = "Orders", field = "recipient")

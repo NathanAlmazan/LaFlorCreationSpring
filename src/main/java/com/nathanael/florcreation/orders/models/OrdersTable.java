@@ -57,4 +57,8 @@ public class OrdersTable {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<OrderDetailsTable> orderItems;
+
+    @ManyToOne
+    @JoinColumn(name = "source_id", referencedColumnName = "source_id")
+    private OrderPaymentTable payment;
 }

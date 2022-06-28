@@ -1,6 +1,7 @@
 package com.nathanael.florcreation.orders.dtos;
 
 import com.nathanael.florcreation.orders.models.OrdersTable;
+import com.nathanael.florcreation.orders.repository.OrderAmountProj;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Orders {
     private Long clientId;
     private Long recipientId;
     private Long riderId;
+    private String paymentId;
 
     public Orders(OrdersTable ordersTable) {
         orderUid = ordersTable.getOrderUid();
@@ -37,5 +39,9 @@ public class Orders {
 
         if (ordersTable.getRider() != null)
             riderId = ordersTable.getRider().getRiderId();
+
+        if (ordersTable.getPayment() != null) {
+            paymentId = ordersTable.getPayment().getSourceId();
+        }
     }
 }

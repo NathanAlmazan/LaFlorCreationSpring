@@ -13,4 +13,6 @@ type Mutation {
     createClient(client: ClientInput!): Client
     createOrder(recipient: RecipientInput, order: OrdersInput): Orders
     createOrderDetail(details: [OrderDetailInput]!): [OrderDetails]
+    createPayment(orderUid: [String]!, paymentType: PaymentType!): OrderPayment
+    confirmPayment(orderUid: String!): OrderPayment
 }

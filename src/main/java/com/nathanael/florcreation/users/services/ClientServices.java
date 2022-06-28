@@ -25,6 +25,12 @@ public class ClientServices {
         );
     }
 
+    public Client getClientById(long clientId) {
+        return usersMapper.clientTableToClient(
+                clientRepository.findByClientById(clientId)
+        );
+    }
+
     public Client addNewClient(Client newClient) {
         if (clientRepository.findByClientAccount(newClient.getAccountUid()) != null)
             return null;

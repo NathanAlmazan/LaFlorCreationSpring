@@ -1,5 +1,6 @@
 package com.nathanael.florcreation.products;
 
+import com.nathanael.florcreation.orders.dtos.OrderDetails;
 import com.nathanael.florcreation.products.dtos.Discount;
 import com.nathanael.florcreation.products.dtos.Items;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,18 @@ public class ProductsController {
         if (items.getDiscountCode() != null)
             return services.getDiscountByCode(items.getDiscountCode());
         else return null;
+    }
+
+    @SchemaMapping(typeName = "OrderDetails", field = "discount")
+    public Discount getOrderDiscount(OrderDetails orderDetails) {
+        if (orderDetails.getDiscountCode() != null)
+            return services.getDiscountByCode(orderDetails.getDiscountCode());
+        else return null;
+    }
+
+    @SchemaMapping(typeName = "OrderDetails", field = "item")
+    public Items getOrderItem(OrderDetails orderDetails) {
+        return services.getItemByCode(orderDetails.getItemCode());
     }
 
     @SchemaMapping(typeName = "Discount", field = "discountedItems")

@@ -5,9 +5,16 @@ enum OrderStatus {
     DLV
 }
 
+enum PaymentType {
+    GCASH
+    GPAY
+    BANK
+    PAYMAYA
+}
+
 type Orders {
     orderUid: String
-    amount: Float!
+    amount: Float
     mop: String!
     status: OrderStatus!
     date: String!
@@ -21,6 +28,8 @@ type Orders {
     recipient: Recipient!
     riderId: Int!
     rider: Rider!
+    paymentId: String
+    payment: OrderPayment
     orderDetails: [OrderDetails]
 }
 
@@ -29,9 +38,16 @@ type OrderDetails {
     itemCode: String!
     quantity: Int!
     discountCode: String
-    totalPrice: Float
+    finalPrice: Float
     item: Items
     discount: Discount
+}
+
+type OrderPayment {
+    sourceId: String!
+    paymentId: String
+    callbackUrl: String
+    paymentDate: String
 }
 
 input OrdersInput {

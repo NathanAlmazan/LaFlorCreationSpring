@@ -4,6 +4,7 @@ import com.nathanael.florcreation.errors.InvalidArgumentException;
 import com.nathanael.florcreation.orders.dtos.Orders;
 import com.nathanael.florcreation.orders.dtos.OrdersInput;
 import com.nathanael.florcreation.orders.mappers.OrdersMapper;
+import com.nathanael.florcreation.orders.repository.OrderAmountProj;
 import com.nathanael.florcreation.orders.repository.OrdersRepository;
 import com.nathanael.florcreation.users.dtos.Recipient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,18 @@ import java.util.List;
 public class OrdersServices {
     @Autowired private OrdersRepository ordersRepository;
     @Autowired private OrdersMapper ordersMapper;
+
+    public Orders getOrderByUid(String uid) {
+        return ordersMapper.orderTableToOrders(
+                ordersRepository.findByOrderUid(uid)
+        );
+    }
+
+    public List<Orders> getAllOrders() {
+        return ordersMapper.orderTableToOrdersList(
+                ordersRepository.findAllOrders()
+        );
+    }
 
     public List<Orders> getAlClientOrders(Long clientId) {
         return ordersMapper.orderTableToOrdersList(
@@ -49,5 +62,17 @@ public class OrdersServices {
         } catch (Exception ex) {
             throw new InvalidArgumentException(ex.getMessage());
         }
+    }
+
+    public double getOrderAmount(String uid) {
+        OrderAmountProj orderAmount = ordersRepository.getOrderAmount(uid);
+
+        if (orderAmount.getOrderAmount() != null) {
+            if (orderAmount.getOrderDiscount() != null)
+                return orderAmount.getOrderAmount() - orderAmount.getOrderDiscount();
+
+            return orderAmount.getOrderAmount();
+        }
+        return 0;
     }
 }

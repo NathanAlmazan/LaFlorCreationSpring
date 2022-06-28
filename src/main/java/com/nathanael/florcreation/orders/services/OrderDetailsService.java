@@ -3,6 +3,7 @@ package com.nathanael.florcreation.orders.services;
 import com.nathanael.florcreation.orders.dtos.OrderDetails;
 import com.nathanael.florcreation.orders.mappers.OrdersMapper;
 import com.nathanael.florcreation.orders.models.OrderDetailsTable;
+import com.nathanael.florcreation.orders.repository.OrderDetailsProj;
 import com.nathanael.florcreation.orders.repository.OrderDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,21 @@ public class OrderDetailsService {
     @Autowired private OrdersMapper ordersMapper;
 
     public List<OrderDetails> createOrderDetails(List<OrderDetails> orderDetails) {
-        List<OrderDetailsTable> orders = new ArrayList<>(orderDetails.size());
+        List<OrderDetailsProj> orders = new ArrayList<>(orderDetails.size());
 
-        for (OrderDetails order : orderDetails)
-           orders.add( orderDetailsRepository.createOrderDetail(
-                   order.getItemCode(),
-                   order.getOrderUid(),
-                   order.getQuantity(),
-                   order.getDiscountCode()
-           ));
+        for (OrderDetails order : orderDetails) {
+            OrderDetailsTable orderDetailsTable = orderDetailsRepository.createOrderDetail(
+                    order.getItemCode(),
+                    order.getOrderUid(),
+                    order.getQuantity(),
+                    order.getDiscountCode()
+            );
 
+            orders.add(orderDetailsRepository.getByOrderDetailKey(
+                    orderDetailsTable.getId().getOrderUid(),
+                    orderDetailsTable.getId().getItemCode()
+            ));
+        }
         return ordersMapper.orderDetailsTableToOrderDetailsList(orders);
     }
 

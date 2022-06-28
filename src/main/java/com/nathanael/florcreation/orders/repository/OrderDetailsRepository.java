@@ -19,6 +19,15 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetailsTable,
             @Param("discount") String discountCode
     );
 
-    @Query(value = "SELECT * FROM order_details_table WHERE order_uid = :order ORDER BY item_code", nativeQuery = true)
-    List<OrderDetailsTable> getByOrderUid(@Param("order") String orderUid);
+    @Query(value = "SELECT (d.quantity * i.itemPrice) AS totalPrice, s AS orderDiscount, d AS orderDetail " +
+            "FROM OrderDetailsTable d INNER JOIN ItemsTable i ON d.id.itemCode = i.itemCode " +
+            "LEFT JOIN DiscountTable s ON d.discount.discountCode = s.discountCode " +
+            "WHERE d.id.orderUid = :order AND d.id.itemCode = :code")
+    OrderDetailsProj getByOrderDetailKey(@Param("order") String orderUid, @Param("code") String code);
+
+    @Query(value = "SELECT (d.quantity * i.itemPrice) AS totalPrice, s AS orderDiscount, d AS orderDetail " +
+            "FROM OrderDetailsTable d INNER JOIN ItemsTable i ON d.id.itemCode = i.itemCode " +
+            "LEFT JOIN DiscountTable s ON d.discount.discountCode = s.discountCode " +
+            "WHERE d.id.orderUid = :order")
+    List<OrderDetailsProj> getByOrderUid(@Param("order") String orderUid);
 }
