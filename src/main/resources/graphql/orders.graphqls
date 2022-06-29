@@ -7,7 +7,7 @@ enum OrderStatus {
 
 enum PaymentType {
     GCASH
-    GPAY
+    GRAB_PAY
     BANK
     PAYMAYA
 }

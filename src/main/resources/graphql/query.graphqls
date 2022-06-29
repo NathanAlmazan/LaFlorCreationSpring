@@ -4,6 +4,7 @@ type Query {
     allDiscount: [Discount]
     allClient: [Client]
     clientByAccount(uid: String!): Client
+    orderById(orderUid: String): Orders
 }
 
 type Mutation {

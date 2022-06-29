@@ -13,6 +13,7 @@ import com.nathanael.florcreation.users.dtos.Recipient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
@@ -25,6 +26,11 @@ public class OrdersController {
     @Autowired private OrdersServices ordersServices;
     @Autowired private OrderDetailsService orderDetailsService;
     @Autowired private OrderPaymentServices orderPaymentServices;
+
+    @QueryMapping
+    public Orders orderById(@Argument String orderUid) {
+        return ordersServices.getOrderByUid(orderUid);
+    }
 
     @MutationMapping
     public Orders createOrder(
