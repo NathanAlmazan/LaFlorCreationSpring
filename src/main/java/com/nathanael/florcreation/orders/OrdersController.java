@@ -1,10 +1,7 @@
 package com.nathanael.florcreation.orders;
 
 import com.nathanael.florcreation.errors.InvalidArgumentException;
-import com.nathanael.florcreation.orders.dtos.OrderDetails;
-import com.nathanael.florcreation.orders.dtos.OrderPayment;
-import com.nathanael.florcreation.orders.dtos.Orders;
-import com.nathanael.florcreation.orders.dtos.OrdersInput;
+import com.nathanael.florcreation.orders.dtos.*;
 import com.nathanael.florcreation.orders.services.OrderDetailsService;
 import com.nathanael.florcreation.orders.services.OrderPaymentServices;
 import com.nathanael.florcreation.orders.services.OrdersServices;
@@ -63,9 +60,37 @@ public class OrdersController {
         }
     }
 
+    @MutationMapping
+    public OrderPayment createPaymentIntent(@Argument("orderUid") List<String> uid, @Argument("paymentType") String type) {
+        try {
+            return orderPaymentServices.createPaymentIntent(uid, type);
+        } catch (IOException e) {
+            throw new InvalidArgumentException("Failed to parse request.");
+        }
+    }
+
+    @MutationMapping
+    public OrderPayment payWithCard(@Argument("card") @Valid CardPayment card, @Argument("orderUid") List<String> uid) {
+        try {
+            return orderPaymentServices.confirmCardPayment(uid.get(0), card);
+        } catch (IOException e) {
+            throw new InvalidArgumentException("Failed to parse request.");
+        }
+    }
+
+    @MutationMapping
+    public Orders deleteOrder(@Argument("orderUid") String orderUid) {
+        return ordersServices.deleteOrder(orderUid);
+    }
+
     @SchemaMapping(typeName = "Client", field = "clientOrders")
     public List<Orders> getClientOrders(Client client) {
         return ordersServices.getAlClientOrders(client.getClientId());
+    }
+
+    @SchemaMapping(typeName = "Client", field = "orderCount")
+    public int getOrderCount(Client client) {
+        return ordersServices.getUnpaidOrderCount(client.getClientId());
     }
 
     @SchemaMapping(typeName = "Orders", field = "orderDetails")

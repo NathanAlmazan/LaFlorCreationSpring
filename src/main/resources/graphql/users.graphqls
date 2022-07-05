@@ -4,6 +4,7 @@ type Client {
     clientName: String!
     clientContact: String!
     clientOrders: [Orders]
+    orderCount: Int
 }
 
 type Recipient {

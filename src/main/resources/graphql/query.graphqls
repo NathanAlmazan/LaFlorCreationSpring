@@ -16,4 +16,7 @@ type Mutation {
     createOrderDetail(details: [OrderDetailInput]!): [OrderDetails]
     createPayment(orderUid: [String]!, paymentType: PaymentType!): OrderPayment
     confirmPayment(orderUid: String!): OrderPayment
+    payWithCard(orderUid: [String]!,card: CardPaymentInput): OrderPayment
+    createPaymentIntent(orderUid: [String]!, paymentType: PaymentType!): OrderPayment
+    deleteOrder(orderUid: String!): Orders
 }

@@ -1,5 +1,6 @@
 package com.nathanael.florcreation.orders.services;
 
+import com.nathanael.florcreation.errors.EntityExceptions;
 import com.nathanael.florcreation.errors.InvalidArgumentException;
 import com.nathanael.florcreation.orders.dtos.Orders;
 import com.nathanael.florcreation.orders.dtos.OrdersInput;
@@ -74,5 +75,21 @@ public class OrdersServices {
             return orderAmount.getOrderAmount();
         }
         return 0;
+    }
+
+    public int getUnpaidOrderCount(Long clientId) {
+        return ordersRepository.getUnpaidOrderCount(clientId).getOrderCount();
+    }
+
+    public Orders deleteOrder(String orderUid) {
+        Orders deletedOrder = ordersMapper.orderTableToOrders(
+                ordersRepository.findByOrderUid(orderUid)
+        );
+
+        if (deletedOrder == null) throw new EntityExceptions("Orders", "Entity not found");
+
+        ordersRepository.deleteOrder(orderUid);
+
+        return deletedOrder;
     }
 }

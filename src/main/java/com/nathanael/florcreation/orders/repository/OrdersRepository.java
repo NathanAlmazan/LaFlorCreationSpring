@@ -2,13 +2,16 @@ package com.nathanael.florcreation.orders.repository;
 
 import com.nathanael.florcreation.orders.models.OrdersTable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+@Transactional
 public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
 
     @Query(value = "SELECT * FROM orders_table ORDER BY delivery_date", nativeQuery = true)
@@ -67,4 +70,10 @@ public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
     @Query(value = "UPDATE orders_table SET status = :status WHERE order_uid IN :orders RETURNING order_uid", nativeQuery = true)
     List<OrdersTable> updateOrdersStatus(@Param("orders") List<String> orders, @Param("status") String status);
 
+    @Query(value = "SELECT COUNT(*) AS orderCount FROM OrdersTable WHERE client.clientId = :client AND status='PND'")
+    AccountOrderProj getUnpaidOrderCount(@Param("client") Long clientId);
+
+    @Modifying
+    @Query(value = "DELETE FROM orders_table WHERE order_uid = :order", nativeQuery = true)
+    void deleteOrder(@Param("order") String orderUid);
 }

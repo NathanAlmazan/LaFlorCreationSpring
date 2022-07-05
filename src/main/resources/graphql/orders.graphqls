@@ -8,7 +8,7 @@ enum OrderStatus {
 enum PaymentType {
     GCASH
     GRAB_PAY
-    BANK
+    CARD
     PAYMAYA
 }
 
@@ -73,4 +73,12 @@ input NewOrderInput {
     order: OrdersInput!
     recipient: RecipientInput!
     details: [OrderDetailInput]!
+}
+
+input CardPaymentInput {
+    cardNumber: String!
+    expMonth: Int!
+    expYear: Int!
+    cvcNumber: Int!
+    paymentType: PaymentType!
 }
