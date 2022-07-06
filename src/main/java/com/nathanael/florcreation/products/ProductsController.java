@@ -43,6 +43,9 @@ public class ProductsController {
     }
 
     @MutationMapping
+    public Items deleteItems(@Argument("itemCode") String itemCode) { return services.deleteItem(itemCode); }
+
+    @MutationMapping
     public Discount createDiscount(@Argument @Valid Discount discount) {
         return services.addNewDiscount(discount);
     }

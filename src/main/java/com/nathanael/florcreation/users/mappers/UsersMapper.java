@@ -2,8 +2,10 @@ package com.nathanael.florcreation.users.mappers;
 
 import com.nathanael.florcreation.users.dtos.Client;
 import com.nathanael.florcreation.users.dtos.Recipient;
+import com.nathanael.florcreation.users.dtos.Rider;
 import com.nathanael.florcreation.users.models.ClientTable;
 import com.nathanael.florcreation.users.models.RecipientTable;
+import com.nathanael.florcreation.users.models.RiderTable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,5 +38,18 @@ public class UsersMapper {
             recipients.add(recipientTableToRecipient(recipient));
 
         return recipients;
+    }
+
+    public Rider riderTableToRider(RiderTable riderTable) {
+        return new Rider(riderTable);
+    }
+
+    public List<Rider> riderTableListToRiderList(List<RiderTable> riderTable) {
+        List<Rider> riders = new ArrayList<>(riderTable.size());
+
+        for (RiderTable rider : riderTable)
+            riders.add(riderTableToRider(rider));
+
+        return riders;
     }
 }

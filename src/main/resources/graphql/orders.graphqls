@@ -27,7 +27,7 @@ type Orders {
     recipientId: Int!
     recipient: Recipient!
     riderId: Int!
-    rider: Rider!
+    rider: Rider
     paymentId: String
     payment: OrderPayment
     orderDetails: [OrderDetails]

@@ -29,12 +29,15 @@ public class RiderTable {
     @Column(name = "rider_contact", length = 12)
     private String riderContact;
 
+    @Column(name = "rider_image", length = 200)
+    private String riderImage;
+
     @Column(name = "rider_city", nullable = false, length = 15)
     private String riderCity;
 
     @Column(name = "rider_province", nullable = false, length = 15)
     private String riderProvince;
 
-    @OneToMany(mappedBy = "rider", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rider", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<OrdersTable> ordersToDeliver;
 }

@@ -3,6 +3,9 @@ type Query {
     itemByCode(code: String!): Items
     allDiscount: [Discount]
     allClient: [Client]
+    allRiders: [Rider]
+    allOrders: [Orders]
+    riderByArea(city: String!, province: String!): [Rider]
     clientByAccount(uid: String!): Client
     orderById(orderUid: String): Orders
 }
@@ -10,6 +13,7 @@ type Query {
 type Mutation {
     createItems(item: ItemsInput!): Items
     updateItems(item: ItemsInput!): Items
+    deleteItems(itemCode: String!): Items
     createDiscount(discount: DiscountInput): Discount
     createClient(client: ClientInput!): Client
     createOrder(recipient: RecipientInput, order: OrdersInput): Orders
@@ -19,4 +23,8 @@ type Mutation {
     payWithCard(orderUid: [String]!,card: CardPaymentInput): OrderPayment
     createPaymentIntent(orderUid: [String]!, paymentType: PaymentType!): OrderPayment
     deleteOrder(orderUid: String!): Orders
+    createRider(rider: RiderInput): Rider
+    updateRider(rider: RiderInput): Rider
+    deleteRider(riderId: Int!): Rider
+    setOrderRider(riderId: Int!, orderUid: String!): Orders
 }

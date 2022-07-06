@@ -25,6 +25,9 @@ public class OrdersController {
     @Autowired private OrderPaymentServices orderPaymentServices;
 
     @QueryMapping
+    public List<Orders> allOrders() { return ordersServices.getAllOrders(); }
+
+    @QueryMapping
     public Orders orderById(@Argument String orderUid) {
         return ordersServices.getOrderByUid(orderUid);
     }
@@ -76,6 +79,11 @@ public class OrdersController {
         } catch (IOException e) {
             throw new InvalidArgumentException("Failed to parse request.");
         }
+    }
+
+    @MutationMapping
+    public Orders setOrderRider(@Argument Long riderId, @Argument String orderUid) {
+        return ordersServices.setOrderRider(orderUid, riderId);
     }
 
     @MutationMapping

@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 public class Rider {
     private Long riderId;
 
-    @NotNull
     @Length(min = 1, max = 30)
     private String accountUid;
 
@@ -22,7 +21,7 @@ public class Rider {
     @Length(min = 1, max = 50)
     private String riderName;
 
-    @Length(min = 12, max = 12)
+    @Length(min = 10, max = 12)
     private String riderContact;
 
     @NotNull
@@ -33,11 +32,16 @@ public class Rider {
     @Length(min = 1, max = 15)
     private String riderProvince;
 
+    @Length(min = 1, max = 200)
+    private String riderImage;
+
     public Rider(RiderTable riderTable) {
         riderId = riderTable.getRiderId();
+        accountUid = riderTable.getAccountUid();
         riderName = riderTable.getRiderName();
         riderContact = riderTable.getRiderContact();
         riderCity = riderTable.getRiderCity();
         riderProvince = riderTable.getRiderProvince();
+        riderImage = riderTable.getRiderImage();
     }
 }

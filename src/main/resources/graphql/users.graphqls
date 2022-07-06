@@ -19,12 +19,13 @@ type Recipient {
 }
 
 type Rider {
-    riderId: ID
+    riderId: Int
     accountUid: String
     riderName: String!
     riderContact: String
     riderCity: String!
     riderProvince: String!
+    riderImage: String
 }
 
 input ClientInput {
@@ -44,9 +45,11 @@ input RecipientInput {
 }
 
 input RiderInput {
+    riderId: Int
     accountUid: String
     riderName: String!
     riderContact: String
     riderCity: String!
     riderProvince: String!
+    riderImage: String
 }

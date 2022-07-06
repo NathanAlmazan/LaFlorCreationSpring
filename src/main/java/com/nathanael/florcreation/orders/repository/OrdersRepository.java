@@ -76,4 +76,7 @@ public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
     @Modifying
     @Query(value = "DELETE FROM orders_table WHERE order_uid = :order", nativeQuery = true)
     void deleteOrder(@Param("order") String orderUid);
+
+    @Query(value = "UPDATE orders_table SET rider_id = :riderId, status = 'DSP' WHERE order_uid = :orderUid RETURNING *", nativeQuery = true)
+    OrdersTable setOrderRider(@Param("riderId") Long riderId, @Param("orderUid") String orderUid);
 }

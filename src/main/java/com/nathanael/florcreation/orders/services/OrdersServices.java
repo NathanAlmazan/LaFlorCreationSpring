@@ -65,6 +65,12 @@ public class OrdersServices {
         }
     }
 
+    public Orders setOrderRider(String orderUid, Long riderId) {
+        return ordersMapper.orderTableToOrders(
+                ordersRepository.setOrderRider(riderId, orderUid)
+        );
+    }
+
     public double getOrderAmount(String uid) {
         OrderAmountProj orderAmount = ordersRepository.getOrderAmount(uid);
 

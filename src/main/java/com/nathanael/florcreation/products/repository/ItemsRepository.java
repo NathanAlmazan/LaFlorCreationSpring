@@ -2,14 +2,17 @@ package com.nathanael.florcreation.products.repository;
 
 import com.nathanael.florcreation.products.models.ItemsTable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface ItemsRepository extends JpaRepository<ItemsTable, String> {
 
-    @Query(value = "SELECT * FROM items_table ORDER BY item_code", nativeQuery = true)
+    @Query(value = "SELECT * FROM items_table ORDER BY is_addon", nativeQuery = true)
     List<ItemsTable> findAllItems();
 
     @Query(value = "SELECT * FROM items_table WHERE is_addon = :addon ORDER BY item_code", nativeQuery = true)
@@ -42,4 +45,8 @@ public interface ItemsRepository extends JpaRepository<ItemsTable, String> {
             @Param("image") String image,
             @Param("discount") String discCode
     );
+
+    @Modifying
+    @Query(value = "DELETE FROM items_table WHERE item_code = :itemCode", nativeQuery = true)
+    void deleteItem(@Param("itemCode") String itemCode);
 }

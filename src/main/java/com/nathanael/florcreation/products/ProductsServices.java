@@ -43,7 +43,7 @@ public class ProductsServices {
 
     public Items addNewItem(Items newItem) {
         if (itemsRepository.findByItemCode(newItem.getItemCode()) != null)
-            throw new EntityExceptions("Items", newItem.getItemCode() + " item already exists.");
+            return updateItem(newItem);
 
         return productMapper.itemsTableToItems(
                 itemsRepository.createItem(
@@ -71,6 +71,17 @@ public class ProductsServices {
                         item.getDiscountCode()
                 )
         );
+    }
+
+    public Items deleteItem(String itemCode) {
+        Items deletedItem = productMapper.itemsTableToItems(
+                itemsRepository.findByItemCode(itemCode)
+        );
+
+        if (deletedItem == null) throw new EntityExceptions("Items", "Item does not exist");
+        itemsRepository.deleteItem(itemCode);
+
+        return deletedItem;
     }
 
     public List<Discount> getAllDiscount() {
