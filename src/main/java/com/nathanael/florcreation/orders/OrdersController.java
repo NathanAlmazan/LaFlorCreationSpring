@@ -87,6 +87,9 @@ public class OrdersController {
     }
 
     @MutationMapping
+    public Orders setOrderDelivered(@Argument String orderUid) { return ordersServices.setOrderDelivered(orderUid); }
+
+    @MutationMapping
     public Orders deleteOrder(@Argument("orderUid") String orderUid) {
         return ordersServices.deleteOrder(orderUid);
     }

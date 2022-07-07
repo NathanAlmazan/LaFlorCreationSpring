@@ -50,6 +50,9 @@ public class ProductsController {
         return services.addNewDiscount(discount);
     }
 
+    @MutationMapping
+    public Discount deleteDiscount(@Argument String discCode) { return services.deleteDiscount(discCode); }
+
     @SchemaMapping(typeName = "Items", field = "discount")
     public Discount getDiscount(Items items) {
         if (items.getDiscountCode() != null)

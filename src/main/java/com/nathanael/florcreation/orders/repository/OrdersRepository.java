@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
 
-    @Query(value = "SELECT * FROM orders_table ORDER BY delivery_date", nativeQuery = true)
+    @Query(value = "SELECT * FROM orders_table ORDER BY delivery_date DESC", nativeQuery = true)
     List<OrdersTable> findAllOrders();
 
     @Query(value = "SELECT * FROM orders_table WHERE order_uid = :uid", nativeQuery = true)
@@ -79,4 +79,7 @@ public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
 
     @Query(value = "UPDATE orders_table SET rider_id = :riderId, status = 'DSP' WHERE order_uid = :orderUid RETURNING *", nativeQuery = true)
     OrdersTable setOrderRider(@Param("riderId") Long riderId, @Param("orderUid") String orderUid);
+
+    @Query(value = "UPDATE orders_table SET status = 'DLV' WHERE order_uid = :uid RETURNING *", nativeQuery = true)
+    OrdersTable setOrderDelivered(@Param("uid") String orderUid);
 }

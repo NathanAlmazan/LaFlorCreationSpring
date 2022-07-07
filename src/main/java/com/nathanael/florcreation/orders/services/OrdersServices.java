@@ -71,6 +71,12 @@ public class OrdersServices {
         );
     }
 
+    public Orders setOrderDelivered(String orderUid) {
+        return ordersMapper.orderTableToOrders(
+                ordersRepository.setOrderDelivered(orderUid)
+        );
+    }
+
     public double getOrderAmount(String uid) {
         OrderAmountProj orderAmount = ordersRepository.getOrderAmount(uid);
 

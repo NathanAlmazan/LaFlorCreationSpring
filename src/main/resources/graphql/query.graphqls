@@ -15,6 +15,7 @@ type Mutation {
     updateItems(item: ItemsInput!): Items
     deleteItems(itemCode: String!): Items
     createDiscount(discount: DiscountInput): Discount
+    deleteDiscount(discCode: String!): Discount
     createClient(client: ClientInput!): Client
     createOrder(recipient: RecipientInput, order: OrdersInput): Orders
     createOrderDetail(details: [OrderDetailInput]!): [OrderDetails]
@@ -27,4 +28,5 @@ type Mutation {
     updateRider(rider: RiderInput): Rider
     deleteRider(riderId: Int!): Rider
     setOrderRider(riderId: Int!, orderUid: String!): Orders
+    setOrderDelivered(orderUid: String!): Orders
 }

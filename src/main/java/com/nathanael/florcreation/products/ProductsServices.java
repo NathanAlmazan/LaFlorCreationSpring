@@ -4,6 +4,7 @@ import com.nathanael.florcreation.errors.EntityExceptions;
 import com.nathanael.florcreation.products.dtos.Discount;
 import com.nathanael.florcreation.products.dtos.Items;
 import com.nathanael.florcreation.products.mappers.ProductMapper;
+import com.nathanael.florcreation.products.models.DiscountTable;
 import com.nathanael.florcreation.products.models.ItemsTable;
 import com.nathanael.florcreation.products.repository.DiscountRepository;
 import com.nathanael.florcreation.products.repository.ItemsRepository;
@@ -103,5 +104,15 @@ public class ProductsServices {
                         newDiscount.getDiscAmount()
                 )
         );
+    }
+
+    public Discount deleteDiscount(String discCode) {
+        DiscountTable exists = discountRepository.findByDiscountCode(discCode);
+
+        if (exists == null) throw new EntityExceptions("Discount", "Discount not found.");
+
+        discountRepository.deleteDiscount(discCode);
+
+        return productMapper.discountTableToDiscount(exists);
     }
 }
