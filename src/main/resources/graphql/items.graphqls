@@ -14,6 +14,11 @@ type Discount {
     discountedItems: [Items]
 }
 
+type ItemRank {
+    itemCode: String!
+    itemSales: Float!
+}
+
 input DiscountInput {
     discCode: String!
     discAmount: Float!

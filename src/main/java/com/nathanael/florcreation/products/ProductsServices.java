@@ -2,6 +2,7 @@ package com.nathanael.florcreation.products;
 
 import com.nathanael.florcreation.errors.EntityExceptions;
 import com.nathanael.florcreation.products.dtos.Discount;
+import com.nathanael.florcreation.products.dtos.ItemRankDto;
 import com.nathanael.florcreation.products.dtos.Items;
 import com.nathanael.florcreation.products.mappers.ProductMapper;
 import com.nathanael.florcreation.products.models.DiscountTable;
@@ -114,5 +115,11 @@ public class ProductsServices {
         discountRepository.deleteDiscount(discCode);
 
         return productMapper.discountTableToDiscount(exists);
+    }
+
+    public List<ItemRankDto> getItemRanks() {
+        return productMapper.itemRankToDtoList(
+                itemsRepository.getItemRanks()
+        );
     }
 }

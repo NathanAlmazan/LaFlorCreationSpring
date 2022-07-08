@@ -50,6 +50,16 @@ type OrderPayment {
     paymentDate: String
 }
 
+type ProvinceRank {
+    province: String!
+    orderCount: Int!
+}
+
+type DailyOrders {
+    deliveryDate: String!
+    orderCount: Int!
+}
+
 input OrdersInput {
     mop: String!
     status: OrderStatus!

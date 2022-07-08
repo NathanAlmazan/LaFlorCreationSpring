@@ -41,6 +41,9 @@ public class UsersController {
     @QueryMapping
     public List<Rider> allRiders() { return riderServices.getAllRiders(); }
 
+    @QueryMapping
+    public List<Recipient> clientRecipients(@Argument String account) { return recipientServices.getClientRecipients(account); }
+
     @MutationMapping
     public Client createClient(@Argument @Valid Client client) {
         return clientServices.addNewClient(client);

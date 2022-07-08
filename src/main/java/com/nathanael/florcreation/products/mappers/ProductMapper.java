@@ -1,9 +1,11 @@
 package com.nathanael.florcreation.products.mappers;
 
 import com.nathanael.florcreation.products.dtos.Discount;
+import com.nathanael.florcreation.products.dtos.ItemRankDto;
 import com.nathanael.florcreation.products.dtos.Items;
 import com.nathanael.florcreation.products.models.DiscountTable;
 import com.nathanael.florcreation.products.models.ItemsTable;
+import com.nathanael.florcreation.products.repository.ItemRank;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,5 +38,18 @@ public class ProductMapper {
             discountList.add(discountTableToDiscount(discount));
 
         return discountList;
+    }
+
+    public ItemRankDto itemRankToDto(ItemRank itemRank) {
+        return new ItemRankDto(itemRank);
+    }
+
+    public List<ItemRankDto> itemRankToDtoList(List<ItemRank> itemRanks) {
+        List<ItemRankDto> itemRankList = new ArrayList<>(itemRanks.size());
+
+        for (ItemRank item : itemRanks)
+            itemRankList.add(itemRankToDto(item));
+
+        return itemRankList;
     }
 }

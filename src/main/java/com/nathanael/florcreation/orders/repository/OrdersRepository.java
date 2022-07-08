@@ -56,6 +56,32 @@ public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
             @Param("fRemarks") String remarks
     );
 
+    @Query(value = "WITH search_client AS (SELECT client_id FROM client_table " +
+            "WHERE account_uid = :account), " +
+            "update_recipient AS (UPDATE recipient_table SET recipient_contact = :rContact, recipient_street = :rStreet, recipient_city = :rCity, recipient_province = :rProvince, latitude = :lat, longitude = :lng " +
+            "WHERE recipient_id = :recipientId RETURNING recipient_id) " +
+            "INSERT INTO orders_table (delivery_date, delivery_time, mop, order_message, status, client_id, recipient_id, rider_id, delivery_notes, florist_remarks) " +
+            "VALUES (:date, :time, :mop, :message, :status, (SELECT client_id FROM search_client), (SELECT recipient_id FROM update_recipient), :rider, :dNotes, :fRemarks) " +
+            "RETURNING *", nativeQuery = true)
+    OrdersTable createOrderWithRecipient(
+            @Param("account") String accountUid,
+            @Param("recipientId") Long recipientId,
+            @Param("rContact") String recipientContact,
+            @Param("rStreet") String recipientStreet,
+            @Param("rCity") String recipientCity,
+            @Param("rProvince") String recipientProvince,
+            @Param("lat") Double latitude,
+            @Param("lng") Double longitude,
+            @Param("date") LocalDate deliveryDate,
+            @Param("time") LocalTime deliveryTime,
+            @Param("mop") String modeOfPayment,
+            @Param("message") String message,
+            @Param("status") String status,
+            @Param("rider") Long riderId,
+            @Param("dNotes") String notes,
+            @Param("fRemarks") String remarks
+    );
+
     @Query(value = "UPDATE orders_table SET source_id = :source, mop = :type WHERE order_uid = :uid RETURNING *", nativeQuery = true)
     OrdersTable addPaymentSource(
             @Param("uid") String orderUid,
@@ -82,4 +108,16 @@ public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
 
     @Query(value = "UPDATE orders_table SET status = 'DLV' WHERE order_uid = :uid RETURNING *", nativeQuery = true)
     OrdersTable setOrderDelivered(@Param("uid") String orderUid);
+
+    @Query(value = "SELECT r.recipientProvince AS province, COUNT(*) AS orderCount " +
+            "FROM OrdersTable o, RecipientTable r " +
+            "WHERE o.recipient.recipientId = r.recipientId " +
+            "GROUP BY r.recipientProvince")
+    List<ProvinceRankingProj> getProvinceRanking();
+
+    @Query(value = "SELECT deliveryDate AS delivery, COUNT(order_uid) AS orderCount " +
+            "FROM OrdersTable " +
+            "GROUP BY deliveryDate " +
+            "ORDER BY deliveryDate DESC")
+    List<DailyOrderProj> getDailyOrders();
 }

@@ -32,6 +32,12 @@ public class OrdersController {
         return ordersServices.getOrderByUid(orderUid);
     }
 
+    @QueryMapping
+    public List<ProvinceRankDto> rankProvinces() { return ordersServices.getProvinceRank(); }
+
+    @QueryMapping
+    public List<DailyOrderDto> dailyOrders() { return ordersServices.getDailyOrders(); }
+
     @MutationMapping
     public Orders createOrder(
             @Argument("recipient") @Valid Recipient recipient,

@@ -8,6 +8,10 @@ type Query {
     riderByArea(city: String!, province: String!): [Rider]
     clientByAccount(uid: String!): Client
     orderById(orderUid: String): Orders
+    clientRecipients(account: String!): [Recipient]
+    rankItemSales: [ItemRank]
+    rankProvinces: [ProvinceRank]
+    dailyOrders: [DailyOrders]
 }
 
 type Mutation {

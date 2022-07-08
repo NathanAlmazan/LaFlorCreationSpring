@@ -18,4 +18,10 @@ public class RecipientServices {
                 recipientRepository.findByRecipientId(recipientId)
         );
     }
+
+    public List<Recipient> getClientRecipients(String account) {
+        return usersMapper.recipientTableToRecipientList(
+                recipientRepository.getClientRecipients(account)
+        );
+    }
 }

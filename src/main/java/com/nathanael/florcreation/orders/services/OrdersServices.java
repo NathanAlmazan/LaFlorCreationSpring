@@ -2,8 +2,10 @@ package com.nathanael.florcreation.orders.services;
 
 import com.nathanael.florcreation.errors.EntityExceptions;
 import com.nathanael.florcreation.errors.InvalidArgumentException;
+import com.nathanael.florcreation.orders.dtos.DailyOrderDto;
 import com.nathanael.florcreation.orders.dtos.Orders;
 import com.nathanael.florcreation.orders.dtos.OrdersInput;
+import com.nathanael.florcreation.orders.dtos.ProvinceRankDto;
 import com.nathanael.florcreation.orders.mappers.OrdersMapper;
 import com.nathanael.florcreation.orders.repository.OrderAmountProj;
 import com.nathanael.florcreation.orders.repository.OrdersRepository;
@@ -39,11 +41,41 @@ public class OrdersServices {
     }
 
     public Orders createNewOrder(OrdersInput newOrder, Recipient recipient) {
+        if (recipient.getRecipientId() != null)
+            return createNewOrderWithRecipient(newOrder, recipient);
+
         try {
             return ordersMapper.orderTableToOrders(
                     ordersRepository.createOrder(
                             newOrder.getClientAccount(),
                             recipient.getRecipientName(),
+                            recipient.getRecipientContact(),
+                            recipient.getRecipientStreet(),
+                            recipient.getRecipientCity(),
+                            recipient.getRecipientProvince(),
+                            recipient.getLatitude(),
+                            recipient.getLongitude(),
+                            LocalDate.parse(newOrder.getDate()),
+                            LocalTime.parse(newOrder.getTime()),
+                            newOrder.getMop(),
+                            newOrder.getMessage(),
+                            newOrder.getStatus(),
+                            newOrder.getRiderId(),
+                            newOrder.getDNotes(),
+                            newOrder.getFRemarks()
+                    )
+            );
+        } catch (Exception ex) {
+            throw new InvalidArgumentException(ex.getMessage());
+        }
+    }
+
+    public Orders createNewOrderWithRecipient(OrdersInput newOrder, Recipient recipient) {
+        try {
+            return ordersMapper.orderTableToOrders(
+                    ordersRepository.createOrderWithRecipient(
+                            newOrder.getClientAccount(),
+                            recipient.getRecipientId(),
                             recipient.getRecipientContact(),
                             recipient.getRecipientStreet(),
                             recipient.getRecipientCity(),
@@ -103,5 +135,17 @@ public class OrdersServices {
         ordersRepository.deleteOrder(orderUid);
 
         return deletedOrder;
+    }
+
+    public List<ProvinceRankDto> getProvinceRank() {
+        return ordersMapper.provinceRankProjListToDtoList(
+                ordersRepository.getProvinceRanking()
+        );
+    }
+
+    public List<DailyOrderDto> getDailyOrders() {
+        return ordersMapper.dailyOrderProjListToDtoList(
+                ordersRepository.getDailyOrders()
+        );
     }
 }

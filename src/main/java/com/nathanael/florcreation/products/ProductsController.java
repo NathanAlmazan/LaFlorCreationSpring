@@ -2,6 +2,7 @@ package com.nathanael.florcreation.products;
 
 import com.nathanael.florcreation.orders.dtos.OrderDetails;
 import com.nathanael.florcreation.products.dtos.Discount;
+import com.nathanael.florcreation.products.dtos.ItemRankDto;
 import com.nathanael.florcreation.products.dtos.Items;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -31,6 +32,9 @@ public class ProductsController {
     public List<Discount> allDiscount() {
         return services.getAllDiscount();
     }
+
+    @QueryMapping
+    public List<ItemRankDto> rankItemSales() { return services.getItemRanks(); }
 
     @MutationMapping
     public Items createItems(@Argument @Valid Items item) {

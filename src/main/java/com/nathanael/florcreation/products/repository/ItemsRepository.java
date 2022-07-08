@@ -49,4 +49,11 @@ public interface ItemsRepository extends JpaRepository<ItemsTable, String> {
     @Modifying
     @Query(value = "DELETE FROM items_table WHERE item_code = :itemCode", nativeQuery = true)
     void deleteItem(@Param("itemCode") String itemCode);
+
+    @Query(value = "SELECT o.id.itemCode AS item, SUM(o.quantity * i.itemPrice) AS itemSales " +
+            "FROM OrderDetailsTable o " +
+            "INNER JOIN ItemsTable i ON i.itemCode = o.id.itemCode " +
+            "GROUP BY o.id.itemCode " +
+            "ORDER BY SUM(o.quantity * i.itemPrice) DESC")
+    List<ItemRank> getItemRanks();
 }
