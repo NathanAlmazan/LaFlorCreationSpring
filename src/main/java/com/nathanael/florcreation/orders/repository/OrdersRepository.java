@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public interface OrdersRepository extends JpaRepository<OrdersTable, String> {
 
-    @Query(value = "SELECT * FROM orders_table ORDER BY delivery_date DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM orders_table WHERE status != 'CRT' ORDER BY delivery_date DESC", nativeQuery = true)
     List<OrdersTable> findAllOrders();
 
     @Query(value = "SELECT * FROM orders_table WHERE order_uid = :uid", nativeQuery = true)
