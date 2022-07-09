@@ -27,7 +27,7 @@ public class FlorcreationApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(@NotNull CorsRegistry registry) {
-				registry.addMapping("/graphql").allowedOrigins("http://localhost:3000")
+				registry.addMapping("/graphql").allowedOrigins("http://localhost:3000", "https://laflorcreation.vercel.app")
 						.allowedHeaders("Content-Type", "Accept")
 						.allowedMethods("POST", "GET", "DELETE");
 			}
